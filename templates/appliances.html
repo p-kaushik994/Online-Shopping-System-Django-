@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appliances</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <!-- For icons like cart -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    {% load static %}
+    <style>
+        main{
+            margin-top:100px;
+        }
+        .products {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            padding: 20px;
+        }
+        .product {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            width: 300px;
+            height:480px;
+            margin: 10px;
+            padding: 15px;
+            text-align: left;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .product:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        .product img {
+            width: 100%;
+            height: 100%;
+            max-height: 200px;
+            object-fit: contain;
+        }
+        .product p {
+            font-size: 1em;
+            margin-top: 5px;
+            color: black;
+        }
+
+        .product .price {
+            font-size: 1.2em;
+            margin-top: 10px;
+            font-weight: bold;
+            color: black;
+        }
+        .product .des{
+            color:#333;
+            margin-top:-10px;
+        }
+        .star{
+            background-color: green;
+            color:white;
+            border:none;
+            border-radius:2px;
+            padding:2px 5px 2px 5px;
+            text-align: center;
+            font-size:13px;
+        }
+        span{
+            color:#333;
+            font-size: 15px;
+        }
+        .buttons{
+            display:flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            text-align: center;
+        }
+        .button1{
+            color:white;
+            font-size:15px;
+            padding:10px 8px 10px 8px;
+            background-color:orange ;
+            border:none;
+            border-radius:5px;
+        }
+        .button2{
+            color:white;
+            font-size:15px;
+            padding:10px 8px 10px 8px;
+            background-color:orangered ;
+            border:none;
+            border-radius:5px; 
+        }
+        .search-bar form {
+            width: 100%;
+            position: relative;
+        }
+
+        /* Input field styling */
+        .search-bar input {
+            width: 100%;
+            padding-right: 40px;  /* Space for the search icon */
+            padding-left: 15px;   /* Space inside the input */
+            border-radius: 5px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            box-shadow: none;
+        }
+
+        /* Button (search icon) styling */
+        .search-bar .search-btn {
+            position: absolute;
+            right: 10px;
+            top: 55%;
+            transform: translateY(-50%);
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            color: black;
+        }
+
+        /* Button hover effect */
+        .search-bar .search-btn:hover {
+            color: #0056b3;
+        }
+
+        
+        .search-bar button i {
+            font-size: 20px;
+        }
+
+        
+        .search-bar {
+            max-width: 600px;  /* Limit the width of the search bar */
+            margin: 0 auto;    /* Center align the search bar */
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            .search-bar {
+                width: 50%;
+            }
+        }
+        .header{
+            display:flex;
+            align-items: center;
+            justify-content: space-between;
+            position:fixed;
+            left:0;
+            right:0;
+            top:0;
+            height:80px;
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: whitesmoke;
+            z-index: 1000;
+        }
+        .left-section{
+            margin-left:30px;
+        }
+        .right-section{
+            margin-right:30px;
+        }
+        .right-section a{
+            text-decoration: none;
+            color:black;
+            font-size:20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header">
+            <div class="left-section">
+                <a href="{% url 'cart:home' %}"><img src="{% static 'images/logo.png' %}" alt="Logo" width="100"></a>
+            </div>
+            <div class="search-bar">
+                <form id="searchForm" action="" method="get" class="d-flex justify-content-center">
+                    <input type="text" name="query" id="searchInput" class="form-control" placeholder="Search for products..." value="{{ query }}">
+                    <button type="submit" class="search-btn"><i class="fas fa-search"></i></button>
+                </form>                
+            </div>
+            <div class="right-section">
+                <a href="{% url 'cart:cart' %}"><i class="fas fa-shopping-cart"></i>Cart (<span id="cart-count">{{ cart_count }}</span>)</a>
+            </div>
+        </div>
+    </header>
+    <main>
+        <div class="products">
+            {% for appliance in appliances %}
+                <div class="product" data-id="{{ appliance.id }}" data-name="{{ appliance.name|lower }}">
+                    {% if appliance.image %}
+                        <a href="">
+                            <img src="{{ appliance.image.url }}" alt="{{ appliance.name }}" width="200">
+                        </a>
+                    {% else %}
+                        <p>No image available</p>
+                    {% endif %}
+                    <p>{{ appliance.name }}</p>
+                    <p class="des">{{appliance.description}}</p>
+                    <button class="star">4<i class="fas fa-star"></i></button> <span>(28,906)</span>
+                    <p class="price"><i class="fa">&#x20B9;</i>{{ appliance.price }}</p>
+                    <div class="buttons">
+                        
+                            <button class="button1">
+                                <i class="fas fa-shopping-cart"></i>
+                                ADD TO CART
+                            </button>
+                        
+                    </div>
+                </div>
+                {% empty %}
+                    <p>No products found.</p>
+            {% endfor %}
+        </div>
+    </main>
+</body>
+<script>
+    // Get the input element and product elements
+    const searchInput = document.getElementById('searchInput');
+    const products = document.querySelectorAll('.product');
+    searchInput.value = '{{ query }}';
+
+    // Add event listener to filter products as user types
+    searchInput.addEventListener('input', function() {
+        const query = searchInput.value.toLowerCase();  // Get the lowercase search query
+
+        // Loop through all products
+        products.forEach(product => {
+            const productName = product.getAttribute('data-name').toLowerCase();
+
+            // If product name matches the query, show it; otherwise, hide it
+            if (productName.includes(query)) {
+                product.style.display = 'block';  // Show product
+            } else {
+                product.style.display = 'none';  // Hide product
+            }
+        });
+    });
+</script>
+<script>
+    // Get all the "Add to Cart" buttons
+    const addToCartButtons = document.querySelectorAll('.button1');
+    
+    // Add event listener for each button
+    addToCartButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            // Get the product ID from the data-id attribute of the parent product div
+            const productId = this.closest('.product').getAttribute('data-id');
+            
+            // Send an AJAX request to add the product to the cart
+            fetch(`/add_to_cart/${productId}/`)
+                .then(response => response.json())
+                .then(data => {
+                    // Update the cart count in the navbar
+                    const cartCount = document.getElementById('cart-count');
+                    cartCount.innerHTML = data.cart_count;
+                })
+                .catch(error => console.error('Error:', error));
+        });
+    });
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Add jQuery -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+</html>

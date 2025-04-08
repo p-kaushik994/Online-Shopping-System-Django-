@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Shop</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <!-- For icons like cart -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="icon" href="{% static 'images/icon.png' %}" type="image/png">
+    <style>
+        .fas {
+            color:rgb(11, 81, 11);
+        }
+        .profile{
+            color:rgb(11, 81, 11);
+            font-size:20px;
+        }
+        .search-bar form {
+            width: 100%;
+            position: relative;
+        }
+
+        /* Input field styling */
+        .search-bar input {
+            width: 100%;
+            padding-right: 40px;  /* Space for the search icon */
+            padding-left: 15px;   /* Space inside the input */
+            border-radius: 5px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            box-shadow: none;
+        }
+
+        /* Button (search icon) styling */
+        .search-bar .search-btn {
+            position: absolute;
+            right: 10px;
+            top: 55%;
+            transform: translateY(-50%);
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            color: black;
+        }
+
+        /* Button hover effect */
+        .search-bar .search-btn:hover {
+            color: #0056b3;
+        }
+
+        /* Make sure the input field and button align well */
+        .search-bar button i {
+            font-size: 20px;
+        }
+
+        /* Optionally, style the form's container */
+        .search-bar {
+            max-width: 600px;  /* Limit the width of the search bar */
+            margin: 0 auto;    /* Center align the search bar */
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            .search-bar {
+                width: 50%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header">
+            <div class="left-section">
+                <a href="{% url 'cart:profile' %}"><img src="{% static 'images/logo.png' %}" alt="Logo" width="100"></a>
+            </div>
+            <div class="search-bar">
+                <form id="searchForm" action="" method="get" class="d-flex justify-content-center">
+                    <input type="text" name="query" id="searchInput" class="form-control" placeholder="Search for products..." value="{{ query }}">
+                    <button type="submit" class="search-btn"><i class="fas fa-search"></i></button>
+                </form>                
+            </div>
+            <div class="right-section">
+                {% if user.is_authenticated %}
+                    <!-- Show the username and a logout option -->
+                    <p class="profile"><i class="fas fa-user-circle"></i> Welcome {{ user.username }}</p>
+                    <a href="{% url 'cart:logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                {% else %}
+                    <!-- Show the login/signup links if the user is not authenticated -->
+                    <a href="{% url 'cart:signup' %}"><i class="fas fa-user-circle"></i> Signup</a>
+                    <a href="{% url 'cart:loginuser' %}"><i class="fas fa-sign-in-alt"></i> Login</a>
+                {% endif %}
+                <a href="{% url 'cart:cart' %}"><i class="fas fa-shopping-cart"></i>Cart</a>
+            </div>
+            <div class="sidenav">
+                <button class="lines" onclick="show()">
+                    <div id="bar1" class="bar"></div>
+                    <div id="bar2" class="bar"></div>
+                    <div id="bar3" class="bar"></div> 
+                </button>
+                <div>
+                    <a href="{% url 'cart:logout' %}">Logout</a>
+                    <a href="{% url 'cart:cart' %}">Cart</a>
+                </div>
+            </div>
+        </div>
+    </header>  
+    <main>
+        <!-- Carousel -->
+        <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <!-- Example Carousel Item -->
+                <div class="carousel-item active">
+                    <img src="{% static 'images/image4.webp' %}" class="d-block w-100" alt="Banner 1">
+                </div>
+                <div class="carousel-item">
+                    <img src="{% static 'images/image3.webp' %}" class="d-block w-100" alt="Banner 2">
+                </div>
+                <div class="carousel-item">
+                    <img src="{% static 'images/image2.webp' %}" class="d-block w-100" alt="Banner 3">
+                </div>
+                <div class="carousel-item">
+                    <img src="{% static 'images/image1.webp' %}" class="d-block w-100" alt="Banner 3">
+                </div>
+            </div>
+            <!-- Carousel controls -->
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+        <h2>Best Of Electronics</h2>
+        <div class="image-slider">
+            <!-- Image Container with Flexbox -->
+            <div class="image-container" data-name="Speakers">
+                <a href="{% url 'cart:speakers' %}">
+                    <img src="{% static 'images/product1speaker.webp' %}" alt="Speakers">
+                </a>
+                <p class="product-heading">Speakers</p>
+                <p class="price">From <i class="fa">&#x20B9;</i>999.00</p>
+            </div>
+            <div class="image-container" data-name="Printers">
+                <a href="{% url 'cart:printers' %}"><img src="{% static 'images/product7printers.webp' %}" alt="Printers"></a>
+                <p class="product-heading">Printers</p>
+                <p class="price">From <i class="fa">&#x20B9;</i>2336.00</p>
+            </div>
+            <div class="image-container" data-name="Smartwatches">
+                <a href="{% url 'cart:smartwatches' %}"><img src="{% static 'images/product2watch.webp' %}" alt="Smartwatches"></a>
+                <p class="product-heading">Smartwatches</p>
+                <p class="price">From <i class="fa">&#x20B9;</i>1399.00</p>
+            </div>
+            <div class="image-container" data-name="Headphones">
+                <a href="{% url 'cart:earbuds' %}">
+                    <img src="{% static 'images/product4.webp' %}" alt="Headphones">
+                </a>
+                <p class="product-heading">Best Wireless Headphones</p>
+                <p class="price">From <i class="fa">&#x20B9;</i>400.00</p>
+            </div>
+            <div class="image-container" data-name="Monitors">
+                <a href="{% url 'cart:monitors'%}"><img src="{% static 'images/product6monitors.webp' %}" alt="Image 5"></a>
+                <p class="product-heading">Monitors</p>
+                <p class="price">From <i class="fa">&#x20B9;</i>6599.00</p>
+            </div>
+        </div>
+        <h2>Special Offers</h2>
+        <div class="image-slider">
+            <!-- Image Container with Flexbox -->
+            <div class="image-container" data-name="Washing Machines">
+                <a href="{% url 'cart:appliances' %}"><img src="{% static 'images/appliances1.jpg' %}" alt="Appliances"></a>
+                <p class="product-heading">Appliances</p>
+                <p class="price">Upto 30%off</p>
+            </div>
+            <div class="image-container" data-name="Top Deals">
+                <a href="{% url 'cart:topdeals' %}"><img src="{% static 'images/fashion1.webp' %}" alt="Top Deals"></a>
+                <p class="product-heading">Top Deals</p>
+                <p class="price">Upto 20% off</p>
+            </div>
+            
+            <div class="image-container" data-name="Home decoration">
+                <a href="{% url 'cart:decorationitems' %}"><img src="{% static 'images/unique1.jpg' %}" alt="Home Decoration"></a>
+                <p class="product-heading">Home Decoration</p>
+                <p class="price">Upto 20%off</p>
+            </div>
+            <div class="image-container" data-name="Handbags">
+                <a href="{% url 'cart:fashiondeals' %}"><img src="{% static 'images/style1.jpg' %}" alt="Fashion Deals"></a>
+                <p class="product-heading">Fashion Deals</p>
+                <p class="price">Upto 20%off</p>
+            </div>
+        </div>
+    </main>  
+</body>
+<script>
+    function show(){
+        document.querySelector('.lines').classList.toggle('open')
+        document.querySelector('.sidenav').classList.toggle('active')
+    }
+</script>
+<script>
+    // Prevent form submission when pressing Enter or clicking the search button
+    document.getElementById('searchForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevents page reload when the search button or Enter key is pressed
+        filterProducts(); // Call the function to filter the products
+    });
+
+    document.getElementById('searchInput').addEventListener('input', function() {
+        filterProducts(); // Call the function to filter products when the input changes
+    });
+
+    function filterProducts() {
+        let searchQuery = document.getElementById('searchInput').value.toLowerCase();
+        let products = document.querySelectorAll('.image-container');
+        let headings = document.querySelectorAll('h2'); // All the headings in the page
+
+        // Loop through each heading and check if any product in the category is visible
+        headings.forEach(function(heading) {
+            let categoryName = heading.textContent.trim().toLowerCase();
+            let categoryProducts = Array.from(products).filter(function(product) {
+                let productName = product.getAttribute('data-name').toLowerCase();
+                return productName.includes(searchQuery) && product.closest('.image-slider').previousElementSibling.textContent.trim().toLowerCase() === categoryName;
+            });
+
+            // If no product matches the search query, hide the heading
+            if (categoryProducts.length === 0) {
+                heading.style.display = 'none';
+            } else {
+                heading.style.display = 'block'; // Make sure the heading is visible if there are matching products
+            }
+        });
+
+        // Filter products based on the search query
+        products.forEach(function(product) {
+            let productName = product.getAttribute('data-name').toLowerCase();
+            if (productName.includes(searchQuery)) {
+                product.style.display = 'inline-block';
+            } else {
+                product.style.display = 'none';
+            }
+        });
+    }
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Add jQuery -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+</html>

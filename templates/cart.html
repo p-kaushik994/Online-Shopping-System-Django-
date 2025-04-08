@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Online Shop</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    {% load static %}
+    <style>
+        /* General cart container */
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .cart-items-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .cart-item {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+
+        .product-container {
+            display: flex;
+            align-items: center;  /* Align image and text in a row */
+            margin-bottom: 10px;  /* Space between image and the quantity/remove buttons */
+        }
+
+        .product-image {
+            max-width: 150px;  /* Adjust based on desired size */
+            height: auto;
+            margin-right: 15px;  /* Space between image and text */
+        }
+
+        .product-details {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            margin-left:15px;
+        }
+
+        .product-name {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .product-price {
+            font-size: 16px;
+            color: #333;
+            margin-top: 5px;  /* Adds space between the name and price */
+        }
+
+        /* Quantity Adjusters */
+        .quantity-controls {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-start;
+            margin-top: 10px;
+        }
+
+        .quantity-btn {
+            width: 30px;
+            height: 30px;
+            font-size: 20px;
+            background-color: #ddd;
+            border: none;
+            cursor: pointer;
+        }
+
+        .quantity-btn:hover {
+            background-color: #bbb;
+        }
+
+        .quantity-input {
+            width: 50px;
+            text-align: center;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            padding: 5px;
+        }
+
+        /* Remove Button */
+        .remove-form {
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+            margin-top: 15px;
+        }
+
+        .remove-btn {
+            padding: 8px 16px;
+            font-size: 14px;
+            color: white;
+            background-color: #e74c3c;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .remove-btn:hover {
+            background-color: #c0392b;
+        }
+
+        /* Cart Total */
+        .cart-total {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: left;
+            margin-left:20px;
+        }
+        .back-btn {
+            padding: 8px 16px;
+            font-size: 14px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            margin-top: 20px;
+        }
+
+        .back-btn:hover {
+            background-color: #2980b9;
+        }
+        .btn{
+            margin-left:20px;
+            margin-top:50px;
+        }
+        .cartimg {
+            text-align: center;
+            padding: 20px;
+            font-size: 17px;
+            margin-top:50px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Your Cart</h1>
+    <!-- Back Button -->
+    <!-- <button onclick="window.history.back()" class="back-btn">Go Back</button> -->
+    {% if cart_items %}
+    <ul class="cart-items-list">
+        {% for item in cart_items %}
+        <li class="cart-item">
+            <div class="product-container">
+                <!-- Product Image -->
+                <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="product-image">
+
+                <!-- Product Details (Name and Price) -->
+                <div class="product-details">
+                    <span class="product-name">{{ item.product.name }}</span>
+                    <span class="product-price">₹{{ item.product.price }}</span>
+                </div>
+            </div>
+
+            <!-- Quantity Adjusters -->
+            <div class="quantity-controls">
+                <form action="{% url 'cart:update_quantity' item.product.id %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit" name="action" value="subtract" class="quantity-btn">-</button>
+                    <input type="text" name="quantity" value="{{ item.quantity }}" readonly class="quantity-input">
+                    <button type="submit" name="action" value="add" class="quantity-btn">+</button>
+                </form>
+            </div>
+
+            <!-- Remove Button -->
+            <div class="remove-form">
+                <form action="{% url 'cart:remove_from_cart' item.product.id %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit" class="remove-btn">Remove</button>
+                </form>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+
+    <div class="cart-total">
+        <strong>Total Price: ₹{{ total_price }}</strong>
+    </div>
+    <a href="{% url 'cart:order_summary' %}" class="btn btn-danger mb-5">Proceed to Order Summary</a>
+    {% else %}
+    <div class="cartimg">
+        <img src="{% static 'images/emptycart.webp' %}" alt="image" width="300">
+        <h3>Your Cart Is Empty</h3>
+        <a href="{% url 'cart:profile' %}" class="btn btn-primary">Back To Home</a>
+    </div>
+    {% endif %}
+</body>
+<script>
+   
+    function removeItem(productId) {
+        fetch("{% url 'cart:remove_from_cart' 0 %}".replace('0', productId), {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify({
+                'product_id': productId,
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("cart-count").textContent = data.cart_count;
+            document.getElementById('product-' + productId).remove();
+        })
+        .catch(error => console.error('Error:', error));
+    }
+</script>
+</html>

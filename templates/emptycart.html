@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Shop</title>
+    {% load static %}
+    <style>
+        .header{
+            display:flex;
+            align-items: center;
+            justify-content: space-between;
+            position:fixed;
+            left:0;
+            right:0;
+            top:0;
+            height:80px;
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: whitesmoke;
+            z-index: 1000;
+        }
+        .left-section{
+            margin-left:50px;
+        }
+        .right-section{
+            margin-right:50px;
+        }
+        .right-section button{
+            background-color: rgb(50, 50, 176);
+            color:white;
+            border:none;
+            padding:8px 30px;
+            font-size:17px;
+            border-radius:3px;
+            cursor: pointer;
+        }
+        main {
+            display: flex;
+            justify-content: center;
+            align-items: center; 
+            height: calc(100vh - 80px);
+            margin-top: 10px;
+        }
+
+        /* Styling for the cart image container */
+        .cartimg {
+            text-align: center;
+            padding: 20px;
+            font-size: 17px;
+        }
+        .cartimg button{
+            background-color: rgb(50, 50, 176);
+            color:white;
+            border:none;
+            padding:8px 40px;
+            font-size:17px;
+            border-radius:3px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header">
+            <div class="left-section">
+                <a href="{% url 'cart:home' %}"><img src="{% static 'images/logo.png' %}" alt="Logo" width="100"></a>
+            </div>
+            <div class="right-section">
+                <a href="{% url 'cart:loginuser' %}"><button class="btn1">Login</button></a>
+            </div>
+        </div>
+    </header>
+    <main>
+        <div class="cartimg">
+            <img src="{% static 'images/emptycart.webp' %}" alt="image" width="300">
+            <h3>Missing Cart Items?</h3>
+            <p>Login to see the items you added previously</p>
+            <a href="{% url 'cart:loginuser' %}"><button class="btn2">Login</button></a>
+        </div>
+    </main>
+</body>
+</html>

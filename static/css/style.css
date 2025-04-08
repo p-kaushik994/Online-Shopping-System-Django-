@@ -1,0 +1,275 @@
+.sidenav{
+    display:none;
+}
+.header{
+    display:flex;
+    align-items: center;
+    justify-content: space-between;
+    position:fixed;
+    left:0;
+    right:0;
+    top:0;
+    height:80px;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: whitesmoke;
+    z-index: 1000;
+}
+.left-section{
+    margin-left:30px;
+}
+.left-section h1{
+    font-size:30px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+}
+.right-section{
+    margin-right:30px;
+    display:flex;
+    gap:20px;
+}
+.right-section a{
+    text-decoration: none;
+    color:black;
+    font-size:20px;
+}
+.carousel-item img{
+    height:250px;
+    margin-top:80px;
+}
+
+h2{
+    margin-top:20px;
+    margin-left:20px;
+}
+
+@media screen and (max-width:1200px){
+    .right-section{
+        display:none;
+    }
+    .sidenav {
+        display:block;
+        height:800%;
+        width: 450px;
+        position: absolute;
+        z-index: 1;
+        top:80px;
+        right:-500px;
+        background-color:whitesmoke;
+        overflow-x: hidden;
+        padding-top: 20px;
+        border-radius: 0px;
+    }
+    /* Style the sidenav links and the dropdown button */
+    .sidenav a{
+        padding: 6px 8px 6px 16px;
+        margin-bottom:15px;
+        text-decoration: none;
+        font-size: 20px;
+        color: black;
+        display: block;
+        border: none;
+        background: none;
+        width:100%;
+        text-align: left;
+        cursor: pointer;
+        outline: none;
+    }
+
+    /* On mouse-over */
+    .sidenav a:hover{
+        color: black;
+        background-color: rgba(128, 128, 128, 0.223);
+        border-radius: 5px;
+    }
+    .sidenav.active{
+        right:0;
+        background-color:whitesmoke;
+        color: black;
+    }
+    .lines.open #bar1{
+        background-color: gray;
+        transform: rotate(45deg) translate(6px, 5px);
+    }
+    .lines.open #bar2{
+        background-color: transparent;
+    }
+    .lines.open #bar3{
+        background-color: gray;
+        transform: rotate(-45deg) translate(6px, -5px);
+    }
+    .lines, .bar{
+        position:fixed;
+    }
+    .lines{
+        display:block;
+        top:0.5%;
+        left:92%;
+        right:0px;
+        width:30px;
+        height:30px;
+        transform: translateY(50%);
+        border:0;
+        background: 0 0;
+        margin-right:10px;
+        cursor: pointer;
+    }
+    .bar{
+        top:8px;
+        background: gray;
+        width:100%;
+        height:4px;
+        transition: all .3s ease-in;
+        right:0px;
+    }
+    #bar2{
+        top:16px;
+    }
+    #bar3{
+        top:24px;
+    }
+    .cart i {
+        margin-right: 5px;
+    }
+}
+@media screen and (max-width:500px){
+    .sidenav{
+        width:375px;
+        border-radius: 0px;
+    }
+}
+@media (min-width:501px) and (max-width:600px){
+    .sidenav{
+        width:450px;
+        border-radius: 0px;
+    }
+}
+@media (min-width:601px) and (max-width:800px){
+    .sidenav{
+        width:450px;
+        border-radius: 0px;
+    }
+}
+@media (min-width:801px) and (max-width:1000px){
+    .sidenav{
+        width:450px;
+        border-radius: 0px;
+    }
+}
+/* style for signup page */
+.container {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px; /* Maximum width of the form */
+    text-align: center;
+}
+h1 {
+    margin-bottom: 20px;
+}
+form .form-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+form .form-group input {
+    width: 90%;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+.btn{
+    width: 90%;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-left:-15px;
+}
+
+.btn:hover {
+    background-color: #45a049;
+}
+
+.lines2, .bar2{
+    position:fixed;
+}
+.lines2{
+    display:block;
+    top:0.5%;
+    left:92%;
+    right:0px;
+    width:30px;
+    height:30px;
+    transform: translateY(50%);
+    border:0;
+    background: 0 0;
+    margin-right:10px;
+    cursor: pointer;
+}
+.bar2{
+    top:8px;
+    background: gray;
+    width:100%;
+    height:4px;
+    transition: all .3s ease-in;
+    right:0px;
+}
+#bar12{
+    transform: rotate(45deg) translate(6px, 5px);
+}
+#bar32{
+    transform: rotate(-45deg) translate(6px, -5px);
+    top:24px;
+}
+#bar22{
+    background-color: transparent;
+    top:16px;
+}
+
+.image-slider {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 20px;
+}
+
+.image-container {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    width: 250px;
+    margin: 10px;
+    padding: 15px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.image-container img {
+    width: 100%;
+    height: 100%;
+    max-height: 150px;
+    object-fit: contain;
+}
+.image-container:hover{
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+.image-container p {
+    font-size: 1em;
+    margin-top: 5px;
+    color: #777;
+}
+
+.image-container .price {
+    font-size: 1em;
+    margin-top: 10px;
+    font-weight: bold;
+    color: #333;
+} 
